@@ -10,7 +10,7 @@ if (-not $isAdmin) {
 Write-Output "脚本以管理员身份运行"
 
 # 保留的最大快照数量
-$maxSnapshots = 5
+$maxSnapshots = 30
 
 # 获取所有虚拟机的名称
 $vms = Get-VM

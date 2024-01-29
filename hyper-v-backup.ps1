@@ -13,7 +13,7 @@ Write-Output "脚本以管理员身份运行"
 $maxSnapshots = 30
 
 # 获取所有虚拟机的名称
-$vms = Get-VM
+$vms = Get-VM | Where-Object { $_.State -eq "Running" }
 foreach ($vm in $vms) {
     Write-Output "为虚拟机 $($vm.Name) 创建定时快照"
 

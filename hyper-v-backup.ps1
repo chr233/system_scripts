@@ -7,7 +7,7 @@ if (-not $isAdmin) {
 }
 
 # 此处放置你的脚本的其余部分
-Write-Output "脚本以管理员身份运行"
+Write-Host "脚本以管理员身份运行"
 
 # 保留的最大快照数量
 $maxSnapshots = 30
@@ -15,7 +15,7 @@ $maxSnapshots = 30
 # 获取所有虚拟机的名称
 $vms = Get-VM | Where-Object { $_.State -eq "Running" }
 foreach ($vm in $vms) {
-    Write-Output "为虚拟机 $($vm.Name) 创建定时快照"
+    Write-Host "为虚拟机 $($vm.Name) 创建定时快照"
 
     $datetime = Get-Date -Format 'yyyy-MM-dd tt hh:mm:ss'
     # 创建快照
@@ -23,14 +23,14 @@ foreach ($vm in $vms) {
 
     # 获取所有快照
     $snapshots = Get-VMSnapshot -VM $vm | Where-Object { $_.Name -like '定时快照*' }
-    Write-Output "共有 $($snapshots.Count) 个定时快照"
+    Write-Host "共有 $($snapshots.Count) 个定时快照"
 
     # 如果快照数量超过限制，则删除较旧的快照
     if ($snapshots.Count -gt $maxSnapshots) {
         $snapshotsToDelete = $snapshots | Sort-Object CreationTime | Select-Object -First ($snapshots.Count - $maxSnapshots)
     
         foreach ($snapshot in $snapshotsToDelete) {
-            Write-Output "删除快照 $($snapshot.Name)"
+            Write-Host "删除快照 $($snapshot.Name)"
             Remove-VMSnapshot -VM $vm -Name $snapshot.Name
         }
     }
